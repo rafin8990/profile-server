@@ -17,6 +17,12 @@ async function run() {
   try {
     const postCollection = client.db('profile').collection('posts')
     app.get('/posts', async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email }
+      const result = await postCollection.find(query).toArray();
+      res.send(result)
+    });
+    app.get('/posts', async (req, res) => {
       let query = {};
       const result = await postCollection.find(query).toArray()
       res.send(result)
@@ -34,21 +40,21 @@ async function run() {
       res.send(result)
     });
 
-    app.put('/posts/:id', async(req, res)=>{
-      const id=req.params.id;
-      const filter={_id: ObjectId(id)}
-      const option={upsert: true}
-      const data=req.body;
-      const updatedDoc={
-        $set:{
+    app.put('/posts/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) }
+      const option = { upsert: true }
+      const data = req.body;
+      const updatedDoc = {
+        $set: {
           data
         }
       }
-      const result= await postCollection.updateOne(filter, updatedDoc, option);
+      const result = await postCollection.updateOne(filter, updatedDoc, option);
       res.send(result);
     });
 
-    
+
 
     app.delete('/posts/:id', async (req, res) => {
       const id = req.params.id;
