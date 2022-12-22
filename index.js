@@ -16,13 +16,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
   try {
     const postCollection = client.db('profile').collection('posts')
-    app.get('/posts', async (req, res) => {
-      const email = req.query.email;
-      const query = { email: email }
-      const result = await postCollection.find(query).toArray();
-      res.send(result)
-    });
-    app.get('/posts', async (req, res) => {
+    app.get('/post', async (req, res) => {
       let query = {};
       const result = await postCollection.find(query).toArray()
       res.send(result)
